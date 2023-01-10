@@ -13,3 +13,5 @@ curl  http://localhost:8080
 ```
 6. add github action to build the container
 7. extend github action to push the container to ghcr.io (free for small projects)
+8. create folder k8s with deployment yamls for the service
+9. 

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-demo
+  namespace: app-demo
+spec:
+  replicas: 2
+  progressDeadlineSeconds: 30
+  selector:
+    matchLabels:
+      app: app-demo
+  template:
+    metadata:
+      labels:
+        app: app-demo
+    spec:
+      hostNetwork: false
+      terminationGracePeriodSeconds: 86400 # 24 hours
+      containers:
+      - name: app-demo
+        image: ghcr.io/uriunger/devops-nextsteps/app-demo:master
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
