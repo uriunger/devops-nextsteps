@@ -2,14 +2,11 @@ kind: Service
 apiVersion: v1
 metadata:
   name: app-demo
-  namespace: demo
+  namespace: app-demo
 spec:
-  ipFamilies:
-    - IPv4
-  ipFamilyPolicy: SingleStack
-  ports:
-      protocol: TCP
-      port: 8080
-      targetPort: 8080
   selector:
     app: app-demo
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
