@@ -5,10 +5,8 @@ COPY . /app
 RUN cd /app && \
     mvn clean install
 
-FROM tomcat:11.0
+FROM tomcat:9
 
-COPY --from=builder /app/target/*war /usr/local/tomcat/webapps/
-
-WORKDIR /tmp
+COPY --from=builder /app/target/*war /usr/local/tomcat/webapps/ROOT.war
 
 CMD ["catalina.sh", "run"]

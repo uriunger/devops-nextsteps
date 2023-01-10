@@ -14,6 +14,12 @@ public final class Hello extends HttpServlet {
 
   private static final long serialVersionUID = 1209661884251841348L;
 
+  @Override
+  public void init() throws ServletException {
+    super.init();
+    System.out.println(":: in init");
+  }
+
   /**
    * Respond to a GET request for the content produced by this servlet.
    *
@@ -23,6 +29,9 @@ public final class Hello extends HttpServlet {
    * @exception IOException if an input/output error occurs
    * @exception ServletException if a servlet error occurs
    */
+
+
+
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
 
