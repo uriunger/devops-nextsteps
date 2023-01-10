@@ -8,14 +8,6 @@ on:
 
 jobs:
 
-#  debug:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-#      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-#      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-#      - name: Check out repository code
-
   build-and-push-image:
     runs-on: ubuntu-latest
     permissions:
@@ -23,7 +15,6 @@ jobs:
       packages: write
 
     steps:
-      - run: echo ${{ env.REGISTRY }}
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -38,7 +29,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ghcr.io/${{ env.IMAGE_NAME }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
