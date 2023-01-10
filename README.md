@@ -12,4 +12,4 @@ docker run -it -p8080:8080 app-demo
 curl  http://localhost:8080
 ```
 6. add github action to build the container
-7. 
+7. extend github action to push the container to ghcr.io (free for small projects)
