@@ -23,5 +23,7 @@ curl  http://localhost:8080
 
 # Adding EC2/RDS components
 1. setup aws account access from local machine using aws cli tool
-2. create terraform plans to provision an EC2 instance and an RDS instance (under dir terraform)
-3. 
+2. create terraform plans to provision an EC2 instance (under dir terraform)
+3. create key pair and commit locally (very bad idea in reality but this is a demo), and use that key when 
+provisioning the ec2 insatnce
+4. 
