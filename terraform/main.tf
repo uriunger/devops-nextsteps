@@ -72,6 +72,12 @@ resource "aws_instance" "app-demo-server" {
   }
 }
 
+resource "local_file" "ansible-inventory" {
+  filename = "${path.module}/../ansible/inventory"
+  content  = templatefile("${path.module}/../ansible/inventory.tmpl", {
+    public_ip = aws_instance.app-demo-server.public_ip
+  })
+}
 
 /*
 resource "aws_db_subnet_group" "app-demo-db" {
