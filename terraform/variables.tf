@@ -15,5 +15,6 @@ variable "region" {
 
 variable "db_password" {
   description = "RDS root user password"
+  default = "TopSecret#0"
   sensitive   = true
 }
