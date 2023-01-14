@@ -22,8 +22,17 @@ curl  http://localhost:8080
 ```
 
 # Adding EC2/RDS components
-1. have an aws account access setup from local machine using aws cli tool
-2. create terraform plans to provision an EC2 instance (under dir terraform)
-3. manually create key pair, have terraform use it when provisioning the ec2 instance
-4. make instance exposed to public internet 
+1. setup access from my local box to my aws account using aws cli tool
+2. created terraform plans to provision an EC2 instance. plans are located in folder 'terraform'. 
+3. manually create key pair in the terraform folder as follows:
+```
+ssh-keygen -f mykey -t rsa
+```
+4. the terraform plans are s hardcoded to use the local key pair it when provisioning the ec2 instance.
+5. run terraform as follows:
+```
+cd terraform
+terraform init
+terraform apply
+```
 5. add ansible code to deploy the app to the provisioned host, see ansible/README.md for more details
