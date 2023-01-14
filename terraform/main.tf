@@ -53,7 +53,7 @@ resource "aws_route_table_association" "subnet-association" {
   route_table_id = aws_route_table.app-demo-route-table.id
 }
 
-resource "aws_key_pair" "openvpn" {
+resource "aws_key_pair" "mykey" {
   key_name   = var.ssh_private_key_file
   public_key = file("${path.module}/${var.ssh_public_key_file}")
 }
@@ -62,7 +62,7 @@ resource "aws_instance" "app-demo-server" {
   ami = var.ami
 
   instance_type               = var.instance_type
-  key_name                    = aws_key_pair.openvpn.key_name
+  key_name                    = aws_key_pair.mykey.key_name
   subnet_id                   = aws_subnet.app-demo-subnet.id
   vpc_security_group_ids      = [aws_security_group.ingress-allow-ssh.id]
   associate_public_ip_address = true
