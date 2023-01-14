@@ -18,3 +18,15 @@ variable "db_password" {
   default = "TopSecret#0"
   sensitive   = true
 }
+
+variable "ssh_public_key_file" {
+  # Generate via 'ssh-keygen -f openvpn -t rsa'
+  description = "The public SSH key to store in the EC2 instance"
+  default     = "terraform/openvpn.pub"
+}
+
+variable "ssh_private_key_file" {
+  # Generate via 'ssh-keygen -f openvpn -t rsa'
+  description = "The private SSH key used to connect to the EC2 instance"
+  default     = "terraform/openvpn"
+}
