@@ -44,11 +44,18 @@
       pip:
         name: docker
 
-    - name: Re-create the app-demo container
-      docker_container:
-        name: app-demo
-        image: ghcr.io/uriunger/devops-nextsteps/app-demo:master
-        state: present
-        recreate: yes
-        exposed_ports:
-          - 8080
+    - name: Update and upgrade apt packages
+      become: true
+      apt:
+        upgrade: yes
+        update_cache: yes
+        cache_valid_time: 86400 #One day
+
+#    - name: Re-create the app-demo container
+#      docker_container:
+#        name: app-demo
+#        image: ghcr.io/uriunger/devops-nextsteps/app-demo:master
+#        state: present
+#        recreate: yes
+#        exposed_ports:
+#          - 8080

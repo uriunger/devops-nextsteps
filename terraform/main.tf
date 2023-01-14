@@ -16,7 +16,7 @@ resource "aws_subnet" "app-demo-subnet" {
   availability_zone = "us-west-2a"
 }
 
-resource "aws_security_group" "ingress-allow-ssh" {
+resource "aws_security_group" "app-demo-ingress" {
   name   = "allow-ssh-sg"
   vpc_id = aws_vpc.app-demo-vpc.id
   ingress {
@@ -25,6 +25,14 @@ resource "aws_security_group" "ingress-allow-ssh" {
     ]
     from_port = 22
     to_port   = 22
+    protocol  = "tcp"
+  }
+  ingress {
+    cidr_blocks = [
+      "0.0.0.0/0"
+    ]
+    from_port = 8080
+    to_port   = 8080
     protocol  = "tcp"
   }
   // Terraform removes the default rule
@@ -64,7 +72,7 @@ resource "aws_instance" "app-demo-server" {
   instance_type               = var.instance_type
   key_name                    = aws_key_pair.mykey.key_name
   subnet_id                   = aws_subnet.app-demo-subnet.id
-  vpc_security_group_ids      = [aws_security_group.ingress-allow-ssh.id]
+  vpc_security_group_ids      = [aws_security_group.app-demo-ingress.id]
   associate_public_ip_address = true
 
   tags = {
