@@ -22,8 +22,8 @@ curl  http://localhost:8080
 ```
 
 # Adding EC2/RDS components
-1. setup aws account access from local machine using aws cli tool
+1. have an aws account access setup from local machine using aws cli tool
 2. create terraform plans to provision an EC2 instance (under dir terraform)
 3. manually create key pair, have terraform use it when provisioning the ec2 instance
 4. make instance exposed to public internet 
-5. 
+5. add ansible code to deploy the app to the provisioned host, see ansible/README.md for more details
