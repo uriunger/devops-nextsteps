@@ -1,4 +1,4 @@
-Steps:
+# First steps:
 1. added maven build that generates a war
 2. wrap maven in docker - the Dockerfile build the webapp and creates a deployable image 
 3. add web.xml to expose the servlet
@@ -21,7 +21,7 @@ k3s kubectl -n app-demo port-forward deployment/app-demo 8080:8080
 curl  http://localhost:8080
 ```
 
-Adding EC2/RDS components
-1. setup aws account access using aws cli tool
+# Adding EC2/RDS components
+1. setup aws account access from local machine using aws cli tool
 2. create terraform plans to provision an EC2 instance and an RDS instance (under dir terraform)
 3. 
