@@ -106,6 +106,13 @@ resource "local_file" "ansible-inventory" {
   })
 }
 
+resource "local_file" "server-env" {
+  filename = "${path.module}/../ansible/server-env"
+  content  = templatefile("${path.module}/../ansible/server-env.tmpl", {
+    endpoint = aws_db_instance.app-demo-db.endpoint
+  })
+}
+
 resource "aws_db_subnet_group" "app-demo" {
   name       = "main"
   subnet_ids = [aws_subnet.app-demo-subnet-1.id, aws_subnet.app-demo-subnet-2.id]

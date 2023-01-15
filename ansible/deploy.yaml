@@ -60,6 +60,11 @@
       reboot:
       when: reboot_required_file.stat.exists == true
 
+    - name: Copy server-env to server
+      copy:
+        src: server-env
+        dest: /tmp/server-env
+
     - name: Re-create the app-demo container
       docker_container:
         name: app-demo
@@ -67,5 +72,6 @@
         state: started
         recreate: yes
         restart: yes
+        env_file: /tmp/server-env
         ports:
           - 8080:8080
