@@ -10,13 +10,19 @@ resource "aws_vpc" "app-demo-vpc" {
   enable_dns_support   = true
 }
 
-resource "aws_subnet" "app-demo-subnet" {
+resource "aws_subnet" "app-demo-subnet-1" {
   vpc_id            = aws_vpc.app-demo-vpc.id
   cidr_block        = cidrsubnet(aws_vpc.app-demo-vpc.cidr_block, 8, 0)
   availability_zone = "us-west-2a"
 }
 
-resource "aws_security_group" "app-demo-ingress" {
+resource "aws_subnet" "app-demo-subnet-2" {
+  vpc_id            = aws_vpc.app-demo-vpc.id
+  cidr_block        = cidrsubnet(aws_vpc.app-demo-vpc.cidr_block, 8, 1)
+  availability_zone = "us-west-2b"
+}
+
+resource "aws_security_group" "app-demo-sg" {
   name   = "allow-ssh-sg"
   vpc_id = aws_vpc.app-demo-vpc.id
   ingress {
@@ -33,6 +39,14 @@ resource "aws_security_group" "app-demo-ingress" {
     ]
     from_port = 8080
     to_port   = 8080
+    protocol  = "tcp"
+  }
+  ingress {
+    cidr_blocks = [
+      "0.0.0.0/0"
+    ]
+    from_port = 3306
+    to_port   = 3306
     protocol  = "tcp"
   }
   // Terraform removes the default rule
@@ -56,8 +70,13 @@ resource "aws_route_table" "app-demo-route-table" {
   }
 }
 
-resource "aws_route_table_association" "subnet-association" {
-  subnet_id      = aws_subnet.app-demo-subnet.id
+resource "aws_route_table_association" "subnet-association-1" {
+  subnet_id      = aws_subnet.app-demo-subnet-1.id
+  route_table_id = aws_route_table.app-demo-route-table.id
+}
+
+resource "aws_route_table_association" "subnet-association-2" {
+  subnet_id      = aws_subnet.app-demo-subnet-2.id
   route_table_id = aws_route_table.app-demo-route-table.id
 }
 
@@ -71,8 +90,8 @@ resource "aws_instance" "app-demo-server" {
 
   instance_type               = var.instance_type
   key_name                    = aws_key_pair.mykey.key_name
-  subnet_id                   = aws_subnet.app-demo-subnet.id
-  vpc_security_group_ids      = [aws_security_group.app-demo-ingress.id]
+  subnet_id                   = aws_subnet.app-demo-subnet-1.id
+  vpc_security_group_ids      = [aws_security_group.app-demo-sg.id]
   associate_public_ip_address = true
 
   tags = {
@@ -87,57 +106,23 @@ resource "local_file" "ansible-inventory" {
   })
 }
 
-/*
-resource "aws_db_subnet_group" "app-demo-db" {
-  name       = "app-demo-db"
-  subnet_ids = module.vpc.public_subnets
-
-  tags = {
-    Name = "app-demo-db"
-  }
-}
-
-resource "aws_db_parameter_group" "app-demo-db" {
-  name   = "app-demo-db"
-  family = "mysql5.7"
+resource "aws_db_subnet_group" "app-demo" {
+  name       = "main"
+  subnet_ids = [aws_subnet.app-demo-subnet-1.id, aws_subnet.app-demo-subnet-2.id]
 }
 
 resource "aws_db_instance" "app-demo-db" {
-  identifier             = "app-demo-db"
-  instance_class         = "db.t3.micro"
+  identifier             = "app-demo"
   allocated_storage      = 5
+  db_name                = "appdemo"
   engine                 = "mysql"
   engine_version         = 5.7
+  instance_class         = "db.t3.micro"
   username               = "uri"
   password               = var.db_password
-  db_subnet_group_name   = aws_db_subnet_group.app-demo-db.name
-  vpc_security_group_ids = [aws_security_group.rds.id]
-  parameter_group_name   = aws_db_parameter_group.app-demo-db.name
+  db_subnet_group_name   = aws_db_subnet_group.app-demo.name
+  vpc_security_group_ids = [aws_security_group.app-demo-sg.id]
   publicly_accessible    = true
   skip_final_snapshot    = true
 }
-*/
-/*
-resource "aws_security_group" "rds" {
-  name   = "app-demo-db"
-  vpc_id = module.vpc.vpc_id
 
-  ingress {
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "app-demo-db"
-  }
-}
-*/
