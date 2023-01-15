@@ -1,3 +1,4 @@
+name: Deploy app-demo to EC2
 defaults:
   run:
     working-directory: ${{ env.tf_actions_working_dir }}
