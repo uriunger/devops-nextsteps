@@ -23,7 +23,7 @@ public class DbAccessor {
                 String createTable = "create table access (" +
                         "id int primary key auto_increment, " +
                         "time datetime not null," +
-                        "caller_ip string not null);";
+                        "caller_ip varchar(100) not null);";
                 stmt.execute(createTable);
                 con.commit();
             }
