@@ -72,6 +72,7 @@
         state: started
         recreate: yes
         restart: yes
+        pull: yes
         env_file: /tmp/server-env
         ports:
           - 8080:8080
