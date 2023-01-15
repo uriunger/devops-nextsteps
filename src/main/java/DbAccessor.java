@@ -20,7 +20,7 @@ public class DbAccessor {
             // db should be provisioned with a single table called 'access' with this schema:
             // create table access (id int primary key auto_increment, time datetime not null);
             try (Statement stmt = con.createStatement()) {
-                String createTable = "create table access (" +
+                String createTable = "create table if not exists access (" +
                         "id int primary key auto_increment, " +
                         "time datetime not null," +
                         "caller_ip varchar(100) not null);";
