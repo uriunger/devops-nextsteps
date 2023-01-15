@@ -22,7 +22,7 @@ curl  http://localhost:8080
 ```
 
 # Adding EC2/RDS components
-1. setup access from my local box to my aws account using aws cli tool
+1. setup access from my local box to my private aws account using aws cli tool
 2. created terraform plans to provision an EC2 instance. plans are located in folder 'terraform'. 
 3. manually create key pair in the terraform folder as follows:
 ```
@@ -35,5 +35,9 @@ cd terraform
 terraform init
 terraform apply
 ```
-5. added ansible code to deploy the app to the provisioned host, see ansible/README.md for more details.
+5. added ansible code deploys the app to the EC2 instance. The flow first installs docker, then upgrade the host 
+and reboot it. Lastly, it deploy the app as a docker container. see ansible/README.md for more details.
 6. extended the terraform plans to also provision an RDS instance.
+7. added some RDS logic to the dummy servlet that creates a table and use it to log requests.
+8. Note: during terraform plan apply, two files are generated in the ansible folder. These files contain the IP of the 
+EC2, and the endpoint for the RDS instance. These details are used during the ansible deployment.
